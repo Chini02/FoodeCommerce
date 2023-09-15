@@ -1,6 +1,40 @@
 <?php
+// 
 require "inc/header.php" ;
 require "inc/navbar.php" ;
+// 
+include "config/config.php" ;
+// 
+if (isset($_POST["submit"])){
+    $fullname         = $_POST["fullname"];
+    $username         = $_POST["username"];
+    $email            = $_POST["email"];
+    $password         = $_POST["password"];
+    $confirmepassword = $_POST["confirmpwd"];
+    $image            = "user.png";
+    if(empty($fullname) || empty($email) || empty($password) || empty($username)){
+        echo "<script>alert('The Input still empty')</script>";
+    }else {
+        if($password == $confirmepassword){
+            $sql    = "INSERT INTO users (fullname,email,username,mypassword,image) VALUES (:fullname,:email,:username,:mypassword,:image)";
+            $insert = $conn->prepare($sql);
+            $hash   = password_hash($password, PASSWORD_DEFAULT);
+            $insert->execute([
+                ":fullname"   => $fullname,
+                ":email"      => $email,
+                ":username"   => $username,
+                ":mypassword" => $hash,
+                ":image"      => $image
+            ]);
+
+            header("location: login.php");
+        }else {
+            echo "<script>alert('The password not correct')</script>";
+        }
+    }
+
+}
+
 ?>
     
     <div id="page-content" class="page-content">
@@ -16,44 +50,44 @@ require "inc/navbar.php" ;
 
                     <div class="card card-login mb-5">
                         <div class="card-body">
-                            <form class="form-horizontal" action="index.html">
+                            <form class="form-horizontal" method="POST" action="register.php">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="text" required="" placeholder="Full Name">
+                                        <input name="fullname" class="form-control" type="text" placeholder="Full Name">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="email" required="" placeholder="Email">
+                                        <input name="email" class="form-control" type="email" placeholder="Email">
                                     </div>
                                 </div>
                                 
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="text" required="" placeholder="Username">
+                                        <input name="username" class="form-control" type="text" placeholder="Username">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="password" required="" placeholder="Password">
+                                        <input name="password" class="form-control" type="password" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="password" required="" placeholder="Confirm Password">
+                                        <input name="confirmpwd" class="form-control" type="password" placeholder="Confirm Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <div class="checkbox">
-                                            <input id="checkbox0" type="checkbox" name="terms">
+                                            <input id="checkbox0" required type="checkbox" name="terms">
                                             <label for="checkbox0" class="mb-0">I Agree with <a href="terms.html" class="text-light">Terms & Conditions</a> </label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="form-group row text-center mt-4">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-block text-uppercase">Register</button>
+                                        <button name="submit" type="submit" class="btn btn-primary btn-block text-uppercase">Register</button>
                                     </div>
                                 </div>
                             </form>

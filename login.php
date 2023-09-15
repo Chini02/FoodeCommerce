@@ -16,25 +16,25 @@ require "inc/navbar.php" ;
 
                     <div class="card card-login mb-5">
                         <div class="card-body">
-                            <form class="form-horizontal" action="index.html">
+                            <form class="form-horizontal" method="POST" action="login.php">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="text" required="" placeholder="Username">
+                                        <input class="form-control" name="email" type="email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input class="form-control" type="password" required="" placeholder="Password">
+                                        <input class="form-control" name="password" type="password"  placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                        <!-- <div class="checkbox">
+                                    <!-- <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                        <div class="checkbox">
                                             <input id="checkbox0" type="checkbox" name="remember">
                                             <label for="checkbox0" class="mb-0"> Remember Me? </label>
-                                        </div> -->
-                                        <!-- <a href="login.html" class="text-light"><i class="fa fa-bell"></i> Forgot password?</a> -->
-                                    </div>
+                                        </div>
+                                        <a href="login.php" class="text-light"><i class="fa fa-bell"></i> Forgot password?</a>
+                                    </div> -->
                                 </div>
                                 <div class="form-group row text-center mt-4">
                                     <div class="col-md-12">
