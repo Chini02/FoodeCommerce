@@ -1,7 +1,50 @@
 <?php
+session_start();
+
+if (isset($_SESSION["username"])) {
+    header("Location: index.php"); // Redirect to the desired page
+    exit; // Ensure that the script exits after the redirect
+}
 require "inc/header.php" ;
-require "inc/navbar.php" ;
+require "config/config.php";
+
+
+
+if (isset($_POST["submit"])){
+    $email            = $_POST["email"];
+    $password         = $_POST["password"];
+    $image            = "user.png";
+    if(empty($email) || empty($password)){
+        echo "<script>alert('The Input still empty')</script>";
+    }else{
+        $sql = "SELECT * FROM users WHERE email = :email ";
+        $login = $conn->prepare($sql);
+        $login->bindParam(':email', $email);
+        
+        $login->execute();
+
+        $fetch = $login->fetch(PDO::FETCH_ASSOC);
+
+        if ($login->rowCount() > 0) {
+            // $hashedPassword = $fetch["mypassword"];
+            if (password_verify($password, $fetch["mypassword"])) {
+                $_SESSION["id"]       = $fetch["id"];
+                $_SESSION["username"] = $fetch["username"];
+                $_SESSION["email"]    = $fetch["email"];
+                $_SESSION["image"]    = $fetch["image"];
+                header("location: index.php");
+                exit; // Exit after successful login
+            }else {
+                echo "<script>alert('Email or Username , Password not correct')</script>";
+            }
+        }else {
+            echo "<script>alert('Email or Username , Password not correct')</script>";
+        }
+    }
+}
+
 ?>
+
    
     <div id="page-content" class="page-content">
         <div class="banner">
@@ -17,6 +60,7 @@ require "inc/navbar.php" ;
                     <div class="card card-login mb-5">
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="login.php">
+                                
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
                                         <input class="form-control" name="email" type="email" placeholder="Email">
@@ -38,7 +82,7 @@ require "inc/navbar.php" ;
                                 </div>
                                 <div class="form-group row text-center mt-4">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-block text-uppercase">Log In</button>
+                                        <button type="submit" name="submit" class="btn btn-primary btn-block text-uppercase">Log In</button>
                                     </div>
                                 </div>
                             </form>

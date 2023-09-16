@@ -1,10 +1,17 @@
 <?php
+session_start();
+
+if (isset($_SESSION["username"])) {
+    header("Location: index.php"); // Redirect to the desired page
+    exit; // Ensure that the script exits after the redirect
+}
 // 
 require "inc/header.php" ;
-require "inc/navbar.php" ;
-// 
+
 include "config/config.php" ;
-// 
+
+
+
 if (isset($_POST["submit"])){
     $fullname         = $_POST["fullname"];
     $username         = $_POST["username"];
@@ -19,7 +26,7 @@ if (isset($_POST["submit"])){
             $sql    = "INSERT INTO users (fullname,email,username,mypassword,image) VALUES (:fullname,:email,:username,:mypassword,:image)";
             $insert = $conn->prepare($sql);
             $hash   = password_hash($password, PASSWORD_DEFAULT);
-            $insert->execute([
+            $result = $insert->execute([
                 ":fullname"   => $fullname,
                 ":email"      => $email,
                 ":username"   => $username,
@@ -27,13 +34,18 @@ if (isset($_POST["submit"])){
                 ":image"      => $image
             ]);
 
-            header("location: login.php");
+            if ($result) {
+                header("location: login.php");
+            } else {
+                echo "<script>alert('Registration failed. Please try again.')</script>";
+            }
         }else {
             echo "<script>alert('The password not correct')</script>";
         }
     }
 
 }
+// 
 
 ?>
     

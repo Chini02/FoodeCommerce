@@ -2,7 +2,7 @@
 // 
 if (!isset($_SERVER["HTTP_REFERER"])) {
     
-    header("location: http://localhost:3000/index.php");
+    header("location: index.php");
     exit;
 }
 // 

@@ -1,10 +1,8 @@
 <?php 
 require "inc/header.php" ;
-require "inc/navbar.php" ;
+
 ?>
-
-
-    <div id="page-content" class="page-content">
+<div id="page-content" class="page-content">
         <div class="banner">
             <div class="jumbotron jumbotron-video text-center bg-dark mb-0 rounded-0">
                 <video width="100%" preload="auto" loop autoplay muted>
@@ -203,9 +201,7 @@ require "inc/navbar.php" ;
                 </div>
             </div>
         </section>
-    </div>
-    
-
+</div>
 <?php 
 require "inc/footer.php";
 ?>

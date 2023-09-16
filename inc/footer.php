@@ -81,15 +81,6 @@
     <script type="text/javascript" src="assets/packages/thumbelina/thumbelina.js"></script>
     <script type="text/javascript" src="assets/packages/bootstrap-touchspin/bootstrap-touchspin.js"></script>
     <script type="text/javascript" src="assets/js/theme.js"></script>
-    <script>
-        $(document).ready(function() {
-            $(".form-control").keyup(function(){
-                var value = $(this).val();
-                value = value.replace(/^(0*)/,"");
-                $(this).val(1);
-            });
-
-        })
-    </script>
+    
 </body>
 </html>

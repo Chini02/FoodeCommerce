@@ -1,6 +1,5 @@
 <?php
 require "inc/header.php";
-require "inc/navbar.php";
 ?>
     <div class="page-header">
         <!--=============== Navbar ===============-->
