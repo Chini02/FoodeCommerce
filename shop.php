@@ -1,5 +1,10 @@
 <?php
 require "inc/header.php" ;
+require "config/config.php" ;
+$sql        = "SELECT * FROM categories";
+$categories = $conn->query($sql);
+$getCategry = $categories->fetchAll(PDO::FETCH_OBJ);
+
 ?>
     <div id="page-content" class="page-content">
         <div class="banner">
@@ -19,72 +24,19 @@ require "inc/header.php" ;
             <div class="row">
                 <div class="col-md-12">
                     <div class="shop-categories owl-carousel mt-5">
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-carrot"></i></span>
-                                    <div class="media-body">
-                                        <h5>Vegetables</h5>
-                                        <p>Freshly Harvested Veggies From Local Growers</p>
+                        <?php foreach ($getCategry as $key ) : ?>
+                            <div class="item">
+                                <a href="shop.php">
+                                    <div class="media d-flex align-items-center justify-content-center">
+                                        <span class="d-flex mr-2"><i class="sb-bistro-<?php echo $key->icon ?>"></i></span>
+                                        <div class="media-body">
+                                            <h5><?php echo $key->name ?></h5>
+                                            <p><?php echo $key->description ?></p>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-apple"></i></span>
-                                    <div class="media-body">
-                                        <h5>Fruits</h5>
-                                        <p>Variety of Fruits From Local Growers</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-roast-leg"></i></span>
-                                    <div class="media-body">
-                                        <h5>Meats</h5>
-                                        <p>Protein Rich Ingridients From Local Farmers</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-fish-1"></i></span>
-                                    <div class="media-body">
-                                        <h5>Fishes</h5>
-                                        <p>Protein Rich Ingridients From Local Farmers</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-french-fries"></i></span>
-                                    <div class="media-body">
-                                        <h5>Frozen Foods</h5>
-                                        <p>Protein Rich Ingridients From Local Farmers</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="shop.html">
-                                <div class="media d-flex align-items-center justify-content-center">
-                                    <span class="d-flex mr-2"><i class="sb-bistro-appetizer"></i></span>
-                                    <div class="media-body">
-                                        <h5>Packages</h5>
-                                        <p>Protein Rich Ingridients From Local Farmers</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -975,75 +927,7 @@ require "inc/header.php" ;
             </div>
         </section>
     </div>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5>About</h5>
-                    <p>Nisi esse dolor irure dolor eiusmod ex deserunt proident cillum eu qui enim occaecat sunt aliqua anim eiusmod qui ut voluptate.</p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Links</h5>
-                    <ul>
-                        <li>
-                            <a href="about.html">About</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">Contact Us</a>
-                        </li>
-                        <li>
-                            <a href="faq.html">FAQ</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">How it Works</a>
-                        </li>
-                        <li>
-                            <a href="terms.html">Terms</a>
-                        </li>
-                        <li>
-                            <a href="privacy.html">Privacy Policy</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                     <h5>Contact</h5>
-                     <ul>
-                         <li>
-                            <a href="tel:+620892738334"><i class="fa fa-phone"></i> 08272367238</a>
-                        </li>
-                        <li>
-                            <a href="mailto:hello@domain.com"><i class="fa fa-envelope"></i> hello@domain.com</a>
-                         </li>
-                     </ul>
-
-                     <h5>Follow Us</h5>
-                     <ul class="social">
-                         <li>
-                            <a href="javascript:void(0)" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                         </li>
-                         <li>
-                            <a href="javascript:void(0)" target="_blank"><i class="fab fa-instagram"></i></a>
-                         </li>
-                         <li>
-                            <a href="javascript:void(0)" target="_blank"><i class="fab fa-youtube"></i></a>
-                         </li>
-                     </ul>
-                </div>
-                <div class="col-md-3">
-                     <h5>Get Our App</h5>
-                     <ul class="mb-0">
-                         <li class="download-app">
-                             <a href="#"><img src="assets/img/playstore.png"></a>
-                         </li>
-                         <li style="height: 200px">
-                             <div class="mockup">
-                                 <img src="assets/img/mockup.png">
-                             </div>
-                         </li>
-                     </ul>
-                </div>
-            </div>
-        </div>
+    
 <?php 
 require "inc/footer.php";
 ?>
