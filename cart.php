@@ -111,13 +111,13 @@ require "inc/navbar.php" ;
                         </div>
                     </div>
                     <div class="col">
-                        <a href="shop.html" class="btn btn-default">Continue Shopping</a>
+                        <a href="shop.php" class="btn btn-default">Continue Shopping</a>
                     </div>
                     <div class="col text-right">
                    
                         <div class="clearfix"></div>
                         <h6 class="mt-3">Total: Rp 180.000</h6>
-                        <a href="checkout.html" class="btn btn-lg btn-primary">Checkout <i class="fa fa-long-arrow-right"></i></a>
+                        <a href="checkout.php" class="btn btn-lg btn-primary">Checkout <i class="fa fa-long-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
