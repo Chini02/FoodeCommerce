@@ -90,13 +90,13 @@
                                         </div>
                                         <div class="card-body">
                                             <h4 class="card-title">
-                                                <a href="detail-product.php"><?php echo $product->title; ?></a>
+                                                <a href="detail-product.php?id=<?php echo $product->id; ?>"><?php echo $product->title; ?></a>
                                             </h4>
                                             <div class="card-price">
                                                 <span class="discount">Rp. <?php echo $product->discount_price; ?>,00$</span>
                                                 <span class="reguler">Rp. <?php echo $product->price; ?>,00$</span>
                                             </div>
-                                            <a href="detail-product.php" class="btn btn-block btn-primary">
+                                            <a href="detail-product.php?id=<?php echo $product->id; ?>" class="btn btn-block btn-primary">
                                                 Add to Cart
                                             </a>
 
@@ -137,7 +137,7 @@
                                         </div>
                                         <div class="card-body">
                                             <h4 class="card-title">
-                                                <a href="detail-product.php"><?php echo $index->title; ?></a>
+                                                <a href="detail-product.php?id=<?php echo $index->title; ?>"><?php echo $index->title; ?></a>
                                             </h4>
                                             <div class="card-price">
                                                 <span class="discount">Rp. <?php echo $index->discount_price; ?>.000</span>
@@ -186,7 +186,7 @@
                                         </div>
                                         <div class="card-body">
                                             <h4 class="card-title">
-                                                <a href="detail-product.php"><?php echo $itemFruits->title; ?></a>
+                                                <a href="detail-product.php?id=<?php echo $itemFruits->id; ?>"><?php echo $itemFruits->title; ?></a>
                                             </h4>
                                             <div class="card-price">
                                                 <span class="discount">Rp. <?php echo $itemFruits->discount_price; ?>.000</span>
@@ -233,7 +233,7 @@
                                         </div>
                                         <div class="card-body">
                                             <h4 class="card-title">
-                                                <a href="detail-product.php">Product Title</a>
+                                                <a href="detail-product.php?id=<?php echo $keymeats->id; ?>"><?php echo $keymeats->title; ?></a>
                                             </h4>
                                             <div class="card-price">
                                                 <span class="discount">Rp. <?php echo $keymeats->discount_price; ?>.000</span>

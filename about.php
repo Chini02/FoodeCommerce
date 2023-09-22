@@ -1,6 +1,5 @@
 <?php 
 require "inc/header.php" ;
-require "inc/navbar.php" ;
 ?>
     <div id="page-content" class="page-content">
         <div class="banner">
