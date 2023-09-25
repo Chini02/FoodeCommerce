@@ -28,7 +28,7 @@ if (isset($_POST["submit"])){
         if ($login->rowCount() > 0) {
             // $hashedPassword = $fetch["mypassword"];
             if (password_verify($password, $fetch["mypassword"])) {
-                $_SESSION["id"]       = $fetch["id"];
+                $_SESSION["user_id"]  = $fetch["id"];
                 $_SESSION["username"] = $fetch["username"];
                 $_SESSION["email"]    = $fetch["email"];
                 $_SESSION["image"]    = $fetch["image"];

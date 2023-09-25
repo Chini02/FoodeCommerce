@@ -1,6 +1,29 @@
 <?php 
     require "inc/header.php" ;
     require "config/config.php";
+
+    if (isset($_POST["submit"])){
+        $prod_title   = $_POST["prod_title"];
+        $prod_image   = $_POST["prod_image"];
+        $prod_price   = $_POST["prod_price"];
+        $prod_quntity = $_POST["prod_quntity"];
+        $prod_id      = $_POST["prod_id"];
+        $user_id      = $_POST["user_id"];
+        // Prepare the SQL statement
+        $sql = "INSERT INTO carts (product_id, product_title, product_image, product_price, product_quantity, user_id)
+            VALUES (:product_id, :product_title, :product_image, :product_price, :product_quantity, :user_id)";
+        $stmt = $pdo->prepare($sql);
+
+        // Execute the statement with the provided values
+        $stmt->execute([
+        ":product_id"       => $prod_id,
+        ":product_title"    => $prod_title,
+        ":product_image"    => $prod_image,
+        ":product_price"    => $prod_price,
+        ":product_quantity" => $prod_quantity,
+        ":user_id"          => $user_id,
+        ]);
+    }
     
     if (isset($_GET["id"])) {
         $id = $_GET["id"];
@@ -10,7 +33,7 @@
         $products = $select->fetch(PDO::FETCH_OBJ);
         
         // Related Product 
-        $selectproducts = $conn->query("SELECT * FROM products WHERE status = 1 AND category_id = '$products->category_id' AND id != '$id'");
+        $selectproducts = $conn->query("SELECT * ,categroy_id  FROM products WHERE status = 1 AND categroy_id = '$products->categroy_id' AND id != '$id'");
         $selectproducts->execute();
         $relateProducts = $selectproducts->fetchAll(PDO::FETCH_OBJ);
     } else {
@@ -63,22 +86,37 @@
                             <form action="" method="POST">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" value="<?php echo $products->title; ?>">
+                                        <input class="form-control" type="text" name="prod_title" value="<?php echo $products->title; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" value="<?php echo $products->id; ?>">
+                                        <input class="form-control" type="text" name="prod_image" value="<?php echo $products->image; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="number" min="1" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="<?php echo $products->quantity; ?>" name="vertical-spin">
+                                        <input class="form-control" type="text" name="prod_price" value="<?php echo $products->price; ?>">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="text" name="user_id" value="<?php echo isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : ''; ?>">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="text" name="prod_id" value="<?php echo $products->id; ?>">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" name="prod_quntity" min="1" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="<?php echo $products->quantity; ?>">
                                     </div>
                                     <div class="col-sm-6"><span class="pt-1 d-inline-block">Pack (1000 gram)</span></div>
                                 </div>
 
-                                <button class="mt-3 btn btn-primary btn-lg">
+                                <button class="mt-3 btn btn-primary btn-lg" type="submit" name="submit">
                                     <i class="fa fa-shopping-basket"></i> Add to Cart
                                 </button>
                             </form>
@@ -138,3 +176,12 @@
 <?php 
 require "inc/footer.php" ;
 ?>
+<script>
+    $(document).ready(function(){
+        $(".form-control").keyup(function () {
+            var value = $(this).val();
+            value = value.replace(/^(0*)/,"");
+            $(this).val(1)
+        })
+    })
+</script>
