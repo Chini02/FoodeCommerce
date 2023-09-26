@@ -36,6 +36,9 @@
         $selectproducts = $conn->query("SELECT * ,categroy_id  FROM products WHERE status = 1 AND categroy_id = '$products->categroy_id' AND id != '$id'");
         $selectproducts->execute();
         $relateProducts = $selectproducts->fetchAll(PDO::FETCH_OBJ);
+
+        // validation cart
+        
     } else {
 
     }
@@ -83,7 +86,7 @@
                             <p class="mb-1">
                                 <strong>Quantity</strong>
                             </p>
-                            <form action="" method="POST">
+                            <form action="" method="POST" id="form_products">
                                 <div class="row">
                                     <div class="col-sm-5">
                                         <input class="form-control" type="text" name="prod_title" value="<?php echo $products->title; ?>">
@@ -116,7 +119,7 @@
                                     <div class="col-sm-6"><span class="pt-1 d-inline-block">Pack (1000 gram)</span></div>
                                 </div>
 
-                                <button class="mt-3 btn btn-primary btn-lg" type="submit" name="submit">
+                                <button class="mt-3 btn btn-primary btn-lg btn-insert" type="submit" name="submit">
                                     <i class="fa fa-shopping-basket"></i> Add to Cart
                                 </button>
                             </form>
@@ -182,6 +185,19 @@ require "inc/footer.php" ;
             var value = $(this).val();
             value = value.replace(/^(0*)/,"");
             $(this).val(1)
+        })
+        $("btn-insert").on("click", function(e){
+            e.preventDefault();
+            var form_products = $("#form_products").serialize()+'&submit=submit';
+            $.ajax({
+                url:"detail-prouduct.php?id=<?php echo $products->id; ?>",
+                method:"POST",
+                data: form_products,
+                success:function(){
+                    alert("product added to cart");
+                    $(".btn-insert").html("<i class='fa fa-shopping-basket'></i> Add to Cart").prop("disabled",true);
+                }
+            })
         })
     })
 </script>
