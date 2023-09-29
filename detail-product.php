@@ -1,4 +1,5 @@
 <?php 
+    // session_start();
     require "inc/header.php" ;
     require "config/config.php";
 
@@ -10,17 +11,15 @@
         $prod_id      = $_POST["prod_id"];
         $user_id      = $_POST["user_id"];
         // Prepare the SQL statement
-        $sql = "INSERT INTO carts (product_id, product_title, product_image, product_price, product_quantity, user_id)
-            VALUES (:product_id, :product_title, :product_image, :product_price, :product_quantity, :user_id)";
-        $stmt = $pdo->prepare($sql);
-
-        // Execute the statement with the provided values
-        $stmt->execute([
+        $sql = "INSERT INTO carts (product_id, prouduct_title, product_image, product_price, prouduct_quntity, user_id)
+            VALUES (:product_id, :prouduct_title, :product_image, :product_price, :prouduct_quntity, :user_id)";
+        $insert = $conn->prepare($sql);
+        $insert->execute([
         ":product_id"       => $prod_id,
-        ":product_title"    => $prod_title,
+        ":prouduct_title"    => $prod_title,
         ":product_image"    => $prod_image,
         ":product_price"    => $prod_price,
-        ":product_quantity" => $prod_quantity,
+        ":prouduct_quntity" => $prod_quntity,
         ":user_id"          => $user_id,
         ]);
     }
@@ -38,6 +37,21 @@
         $relateProducts = $selectproducts->fetchAll(PDO::FETCH_OBJ);
 
         // validation cart
+        if (isset($_SESSION["user_id"])) {
+            try {
+                $validateCart = $conn->query("SELECT * FROM carts WHERE product_id = '$id' AND user_id = '$_SESSION[user_id]'");
+                if ($validateCart === false) {
+                    throw new Exception("Query failed: " . $conn->error);
+                }
+                $validateCart->execute();
+                $cartExists = $validateCart->rowCount() > 0;
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
+            }
+        } else {
+            // If user is not logged in, set $cartExists to false
+            $cartExists = false;
+        }
         
     } else {
 
@@ -89,27 +103,27 @@
                             <form action="" method="POST" id="form_products">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" name="prod_title" value="<?php echo $products->title; ?>">
+                                        <input type="hidden" class="form-control" name="prod_title" value="<?php echo $products->title; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" name="prod_image" value="<?php echo $products->image; ?>">
+                                        <input type="hidden" class="form-control" name="prod_image" value="<?php echo $products->image; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" name="prod_price" value="<?php echo $products->price; ?>">
+                                        <input type="hidden" class="form-control" name="prod_price" value="<?php echo $products->price; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" name="user_id" value="<?php echo isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : ''; ?>">
+                                        <input type="hidden" class="form-control" name="user_id" value="<?php echo isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : ''; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <input class="form-control" type="text" name="prod_id" value="<?php echo $products->id; ?>">
+                                        <input type="hidden" class="form-control" name="prod_id" value="<?php echo $products->id; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -118,10 +132,15 @@
                                     </div>
                                     <div class="col-sm-6"><span class="pt-1 d-inline-block">Pack (1000 gram)</span></div>
                                 </div>
-
-                                <button class="mt-3 btn btn-primary btn-lg btn-insert" type="submit" name="submit">
-                                    <i class="fa fa-shopping-basket"></i> Add to Cart
-                                </button>
+                                <?php if ($cartExists): ?>
+                                    <button class="mt-3 btn btn-primary btn-lg btn-insert" type="submit" name="submit" disabled>
+                                        <i class="fa fa-shopping-basket"></i> Add to Cart
+                                    </button>
+                                <?php else: ?>
+                                    <button class="mt-3 btn btn-primary btn-lg btn-insert" type="submit" name="submit">
+                                        <i class="fa fa-shopping-basket"></i> Add to Cart
+                                    </button>
+                                <?php endif; ?>
                             </form>
                         </div>
                     </div>
@@ -180,24 +199,25 @@
 require "inc/footer.php" ;
 ?>
 <script>
-    $(document).ready(function(){
-        $(".form-control").keyup(function () {
-            var value = $(this).val();
-            value = value.replace(/^(0*)/,"");
-            $(this).val(1)
-        })
-        $("btn-insert").on("click", function(e){
-            e.preventDefault();
-            var form_products = $("#form_products").serialize()+'&submit=submit';
-            $.ajax({
-                url:"detail-prouduct.php?id=<?php echo $products->id; ?>",
-                method:"POST",
-                data: form_products,
-                success:function(){
-                    alert("product added to cart");
-                    $(".btn-insert").html("<i class='fa fa-shopping-basket'></i> Add to Cart").prop("disabled",true);
-                }
-            })
-        })
-    })
+   $(document).ready(function(){
+    $(".form-control").keyup(function () {
+        var value = $(this).val();
+        value = value.replace(/^(0*)/,"");
+        $(this).val(1)
+    });
+    $(".btn-insert").on("click", function(e){
+        e.preventDefault();
+        var form_products = $("#form_products").serialize()+'&submit=submit';
+        $.ajax({
+            url: "detail-product.php?id=<?php echo $products->id; ?>",
+            method:"POST",
+            data: form_products,
+            success:function(response){ // Added response parameter here
+                alert("Product Successfully Added"); // Show the response message
+                $(".btn-insert").html("<i class='fa fa-shopping-basket'></i> Added to Cart").prop("disabled",true); // Update button text
+            }
+        });
+    });
+});
+
 </script>
