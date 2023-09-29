@@ -1,6 +1,17 @@
 <?php 
-require "inc/header.php" ;
-require "inc/navbar.php" ;
+    require "inc/header.php" ;
+    require "config/config.php" ;
+
+    $sql = "SELECT * FROM carts WHERE user_id = :user_id";
+    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Database query error: " . $conn->errorInfo()[2]);
+    }
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $cartItems = $stmt->fetchAll(PDO::FETCH_OBJ);
+
 ?>
     <div id="page-content" class="page-content">
         <div class="banner">
@@ -34,78 +45,33 @@ require "inc/navbar.php" ;
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php foreach($cartItems as $items): ?>
                                     <tr>
                                         <td>
-                                            <img src="assets/img/fish.jpg" width="60">
+                                            <img src="assets/img/<?php echo $items->product_image; ?>" width="60">
                                         </td>
                                         <td>
-                                            Ikan Segar<br>
+                                            <?php echo $items->product_title; ?><br>
                                             <small>1000g</small>
                                         </td>
                                         <td>
-                                            Rp 30.000
+                                            Rp <?php echo $items->product_price; ?>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="1" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="1" name="vertical-spin">
+                                            <input class="form-control" type="number" min="1" data-bts-button-down-class="btn btn-primary"
+                                             data-bts-button-up-class="btn btn-primary" value="<?php echo $items->product_quantity; ?>" name="vertical-spin">
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary">UPDATE</a>
+                                            <a href="detail-product?id=<?php echo $items->id; ?>" class="btn btn-primary">UPDATE</a>
                                         </td>
                                         <td>
-                                            Rp 30.000
+                                            Rp <?php echo $items->product_price; ?>
                                         </td>
                                         <td>
                                             <a href="javasript:void" class="text-danger"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/img/meats.jpg" width="60">
-                                        </td>
-                                        <td>
-                                            Sirloin<br>
-                                            <small>1000g</small>
-                                        </td>
-                                        <td>
-                                            Rp 120.000
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="number" min="1" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="1" name="vertical-spin">
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary">UPDATE</a>
-                                        </td>
-                                        <td>
-                                            Rp 120.000
-                                        </td>
-                                        <td>
-                                            <a href="javasript:void" class="text-danger"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/img/vegetables.jpg" width="60">
-                                        </td>
-                                        <td>
-                                            Mix Vegetables<br>
-                                            <small>1000g</small>
-                                        </td>
-                                        <td>
-                                            Rp 30.000
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="number" min="1" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="1" name="vertical-spin">
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary">UPDATE</a>
-                                        </td>
-                                        <td>
-                                            Rp 30.000
-                                        </td>
-                                        <td>
-                                            <a href="javasript:void" class="text-danger"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
